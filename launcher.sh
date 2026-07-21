@@ -2,21 +2,36 @@
 # Move to the project directory no matter where this script is called from
 cd "$(dirname "$0")"
 
-KERNEL_DIR="RKKDR"
-RELEASE_DIR="release"
-
-# 1. Compile the GUI natively
-make
-
-# 2. Check and load the Kernel Module
-if ! lsmod | grep -q RKKDR; then
-    # If not loaded, compile and load it automatically
-    make -C "$KERNEL_DIR" load
+# 1. Check if we are running from a source tree or an installation
+if [ -f "Makefile" ] && [ -d "release" ]; then
+    # --- Source Tree Mode ---
+    
+    # Compile the GUI natively
+    make
+    
+    KERNEL_DIR="RKKDR"
+    RELEASE_DIR="release"
+    BINARY="$PWD/$RELEASE_DIR/AutoClicker"
+    
+    # Check and load the Kernel Module if it's not already loaded
+    if ! lsmod | grep -q RKKDR; then
+        echo "Loading kernel module RKKDR..."
+        make -C "$KERNEL_DIR" load
+    fi
+else
+    # --- Installed Mode ---
+    BINARY="$PWD/AutoClicker"
+    
+    # For installed mode, we just verify the module is already loaded
+    if ! lsmod | grep -q RKKDR; then
+        echo "Error: RKKDR kernel driver is not loaded!"
+        echo "Please ensure the RKKDR kernel module is loaded before running the AutoClicker app."
+        exit 1
+    fi
 fi
 
-# 3. Allow root to access the X11 display
+# 2. Allow root to access the X11 display
 xhost +si:localuser:root > /dev/null 2>&1
 
-# 4. Launch the GUI
-# The binary is located in the detected release folder
-pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" "$PWD/$RELEASE_DIR/AutoClicker" > gui_error.log 2>&1
+# 3. Launch the GUI
+pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" "$BINARY" > gui_error.log 2>&1
