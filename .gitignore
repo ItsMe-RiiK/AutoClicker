@@ -5,3 +5,4 @@ release/
 
 compile_flags.txt
 gui_error.log
+update_submodule.sh
