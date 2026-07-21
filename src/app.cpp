@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <vector>
 
+// Set path to RKKDR module parameters
 const std::string SYSFS_BASE    = "/sys/module/RKKDR/parameters/";
 const std::string ENABLE_FILE   = SYSFS_BASE + "enable";
 const std::string INTERVAL_FILE = SYSFS_BASE + "interval_ms";
