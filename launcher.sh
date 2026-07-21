@@ -19,4 +19,4 @@ xhost +si:localuser:root > /dev/null 2>&1
 
 # 4. Launch the GUI
 # The binary is located in the detected release folder
-sudo -S -E "$RELEASE_DIR/AutoClicker" > gui_error.log 2>&1
+pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" "$PWD/$RELEASE_DIR/AutoClicker" > gui_error.log 2>&1
