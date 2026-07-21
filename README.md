@@ -74,3 +74,6 @@ Simply run the included launcher script from your terminal or by double-clicking
    ```bash
    pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" ./release/AutoClicker
    ```
+
+### LICENSE
+This project is licensed under the GPL-3.0 [LICENSE](License)
