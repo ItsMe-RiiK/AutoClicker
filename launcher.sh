@@ -9,7 +9,14 @@ if [ -f "Makefile" ] && [ -d "release" ]; then
     # Compile the GUI natively
     make
     
-    KERNEL_DIR="RKKDR"
+    if [ -f "RKKDR/Makefile" ]; then
+        KERNEL_DIR="RKKDR"
+    elif [ -f "../KernelDriver/Makefile" ]; then
+        KERNEL_DIR="../KernelDriver"
+    else
+        echo "Error: RKKDR kernel driver source not found."
+        exit 1
+    fi
     RELEASE_DIR="release"
     BINARY="$PWD/$RELEASE_DIR/AutoClicker"
     
